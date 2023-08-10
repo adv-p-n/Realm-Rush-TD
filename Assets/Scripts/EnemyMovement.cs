@@ -10,7 +10,7 @@ public class EnemyMovement : MonoBehaviour
     
 
     
-    void Start()
+    void OnEnable()
     {
         FindPath();
         RetunToStart();
@@ -49,7 +49,7 @@ public class EnemyMovement : MonoBehaviour
             }
             
         }
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     
 }
