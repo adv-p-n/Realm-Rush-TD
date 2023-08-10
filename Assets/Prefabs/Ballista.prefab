@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: {fileID: 3144582324300694500}
   target: {fileID: 0}
+  arrow: {fileID: 7671854896623626688}
 --- !u!1 &6131056645070147807
 GameObject:
   m_ObjectHideFlags: 0
