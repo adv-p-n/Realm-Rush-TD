@@ -7,6 +7,8 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] int maxHitPoints = 5;
     int currentHitpoints;
+    [Tooltip("Amount of hitpoints added each wave")]
+    [SerializeField] int difficultyIncrease = 1;
     Enemy enemy;
 
      void Awake()
@@ -34,6 +36,7 @@ public class EnemyHealth : MonoBehaviour
         {
             enemy.RewardGold();
             gameObject.SetActive(false);
+            maxHitPoints += difficultyIncrease;
             
         }
     }
