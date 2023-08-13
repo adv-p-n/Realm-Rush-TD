@@ -16253,6 +16253,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ' Object Pool'
       objectReference: {fileID: 0}
+    - target: {fileID: 7783036667776330740, guid: 10b21620562ed414fa9b40a5a295e74e, type: 3}
+      propertyPath: poolSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7783036667776330740, guid: 10b21620562ed414fa9b40a5a295e74e, type: 3}
+      propertyPath: waitTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8377116972140071398, guid: 10b21620562ed414fa9b40a5a295e74e, type: 3}
       propertyPath: m_RootOrder
       value: 3
