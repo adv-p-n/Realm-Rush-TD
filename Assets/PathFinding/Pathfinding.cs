@@ -6,7 +6,16 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    [SerializeField] Node currentNode;
+    [SerializeField] Vector2Int startCoordinates;
+    [SerializeField] Vector2Int endCoordinates;
+
+    Node startNode;
+    Node endNode;
+    Node currentNode;
+
+    Dictionary<Vector2Int, Node> reached =new Dictionary<Vector2Int,Node>();
+    Queue<Node> queue = new Queue<Node>();
+
     Vector2Int[] directions = {Vector2Int.right,Vector2Int.left,Vector2Int.up,Vector2Int.down};
     GridManager gridManager;
     Dictionary<Vector2Int, Node> grid;
@@ -16,10 +25,16 @@ public class Pathfinding : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
         if(gridManager!=null) 
         { grid=gridManager.Grid; }
+        
+        
     }
     void Start()
     {
-        SearchForNeighbour();
+        startNode = gridManager.GetNode(startCoordinates);
+        endNode = gridManager.GetNode(endCoordinates);
+
+        BreadthFirstSearch();
+        Path();
 
     }
 
@@ -33,11 +48,50 @@ public class Pathfinding : MonoBehaviour
             if (grid.ContainsKey(nodeToCheck))
             {
                 neighbourNodes.Add(grid[nodeToCheck]);
-
-                //removeeeeee
-                grid[nodeToCheck].isExplored = true;
-                grid[currentNode.coordinates].isPath= true;
             }
         }
+        foreach(Node neighbour in neighbourNodes)
+        {
+            if (!reached.ContainsKey(neighbour.coordinates) && neighbour.isWalkable)
+            {
+                neighbour.isConnected = currentNode;
+                queue.Enqueue(neighbour);
+                reached.Add(neighbour.coordinates, neighbour);
+            }
+        }
+    }
+
+    void BreadthFirstSearch()
+    {
+        bool isRunning = true;
+        currentNode = startNode;
+        reached.Add(startCoordinates, currentNode);
+        queue.Enqueue(currentNode);
+
+        while(isRunning && queue.Count>0)
+        {
+            currentNode= queue.Dequeue();
+            currentNode.isExplored = true;
+            if (currentNode.coordinates == endNode.coordinates)
+            {
+                isRunning = false;
+            }
+            SearchForNeighbour();
+            
+        }
+    }
+    List<Node> Path()
+    {
+        List<Node> path = new List<Node>();
+        currentNode = endNode;
+
+        while (currentNode.isConnected != null)
+        {
+            path.Add(currentNode);
+            currentNode.isPath = true;
+            currentNode = currentNode.isConnected;
+        }
+        path.Reverse();
+        return path;
     }
 }
