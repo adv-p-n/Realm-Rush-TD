@@ -8769,8 +8769,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7514e6ec3caca8c4d9f7b147336587a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startCoordinates: {x: 0, y: 0}
-  endCoordinates: {x: 4, y: 2}
+  startCoordinates: {x: 5, y: 1}
+  endCoordinates: {x: 2, y: 0}
 --- !u!1001 &1201853110
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9467,7 +9467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2249209c1d47dc141a8cdfd2504136cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 5, y: 5}
+  gridSize: {x: 10, y: 10}
+  unityGridSize: 10
 --- !u!1001 &1259344182
 PrefabInstance:
   m_ObjectHideFlags: 0
