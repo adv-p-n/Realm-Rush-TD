@@ -7,7 +7,11 @@ using UnityEngine;
 public class Pathfinding : MonoBehaviour
 {
     [SerializeField] Vector2Int startCoordinates;
+    public Vector2Int StartCoordinates { get { return startCoordinates; } }
+
     [SerializeField] Vector2Int endCoordinates;
+    public Vector2Int EndCoordinates { get { return endCoordinates; } }
+
 
     Node startNode;
     Node endNode;
@@ -24,21 +28,29 @@ public class Pathfinding : MonoBehaviour
     {
         gridManager = FindObjectOfType<GridManager>();
         if(gridManager!=null) 
-        { grid=gridManager.Grid; }
+        { 
+            grid=gridManager.Grid;
+            startNode = grid[startCoordinates];
+            endNode = grid[endCoordinates];
+        }
         
         
     }
     void Start()
     {
-        startNode = gridManager.GetNode(startCoordinates);
-        endNode = gridManager.GetNode(endCoordinates);
-
-        BreadthFirstSearch();
-        Path();
+        
+        GetPath();
 
     }
 
-     void SearchForNeighbour()
+     public List<Node> GetPath()
+    {
+        gridManager.ResetNode();
+        BreadthFirstSearch();
+        return Path();
+    }
+
+    void SearchForNeighbour()
     {
         List<Node> neighbourNodes= new List<Node>();
        
@@ -63,6 +75,12 @@ public class Pathfinding : MonoBehaviour
 
     void BreadthFirstSearch()
     {
+        queue.Clear();
+        reached.Clear();
+
+        startNode.isWalkable = true;
+        endNode.isWalkable = true;
+
         bool isRunning = true;
         currentNode = startNode;
         reached.Add(startCoordinates, currentNode);
@@ -93,5 +111,21 @@ public class Pathfinding : MonoBehaviour
         }
         path.Reverse();
         return path;
+    }
+    public bool WillBlockPath(Vector2Int coordinates)
+    {
+        if(grid.ContainsKey(coordinates))
+        {
+            bool prevState = grid[coordinates].isWalkable;
+            grid[coordinates].isWalkable = false;
+            List<Node> newPath = GetPath();
+            grid[coordinates].isWalkable = prevState;
+            if (newPath.Count < 1)
+            {
+                GetPath();
+                return true;
+            }
+        }
+        return false;
     }
 }

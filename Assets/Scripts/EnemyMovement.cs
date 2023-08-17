@@ -6,13 +6,18 @@ using UnityEngine;
 [RequireComponent(typeof(Enemy))]
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] List<Tile> path = new List<Tile>();
+    [SerializeField] List<Node> path = new List<Node>();
     [SerializeField] [Range(0f,5f)] float moveSpeed = 1f;
     Enemy enemy;
+    GridManager gridManager;
+    Pathfinding pathfinding;
 
      void Awake()
     {
         enemy = GetComponent<Enemy>();
+        gridManager = FindObjectOfType<GridManager>();
+        pathfinding = FindObjectOfType<Pathfinding>();
+
     }
 
     void OnEnable()
@@ -25,28 +30,19 @@ public class EnemyMovement : MonoBehaviour
      void FindPath()
     {
         path.Clear();
-        GameObject parent = GameObject.FindGameObjectWithTag("Path");
-        foreach (Transform child in parent.transform)
-        {
-            Tile waypoint= child.GetComponent<Tile>();
-            if (waypoint != null)
-            {
-                path.Add(waypoint);
-            }
-              
-        }
+        path = pathfinding.GetPath();
     }
     void RetunToStart()
     {
-        transform.position = path[0].transform.position;
+        transform.position = gridManager.GetWorldPositionFromCoordinates(pathfinding.StartCoordinates);
     }
 
     IEnumerator FollowPath()
     {
-        foreach (Tile waypoint in path)
+        for(int i=0; i<path.Count; i++)
         {
             Vector3 startPos = transform.position;
-            Vector3 endPos = waypoint.transform.position;
+            Vector3 endPos = gridManager.GetWorldPositionFromCoordinates(path[i].coordinates);
             float movePercent = 0f;
 
             transform.LookAt(endPos);
