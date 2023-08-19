@@ -32,6 +32,8 @@ public class Pathfinding : MonoBehaviour
             grid=gridManager.Grid;
             startNode = grid[startCoordinates];
             endNode = grid[endCoordinates];
+            startNode.isWalkable = true;
+            endNode.isWalkable = true;
         }
         
         
@@ -127,5 +129,9 @@ public class Pathfinding : MonoBehaviour
             }
         }
         return false;
+    }
+    public void NotifyReceivers()
+    {
+        BroadcastMessage("RecalculatePath", SendMessageOptions.DontRequireReceiver);
     }
 }

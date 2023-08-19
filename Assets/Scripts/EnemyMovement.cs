@@ -6,8 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(Enemy))]
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] List<Node> path = new List<Node>();
+    
     [SerializeField] [Range(0f,5f)] float moveSpeed = 1f;
+    List<Node> path = new List<Node>();
     Enemy enemy;
     GridManager gridManager;
     Pathfinding pathfinding;
@@ -22,12 +23,12 @@ public class EnemyMovement : MonoBehaviour
 
     void OnEnable()
     {
-        FindPath();
+        RecalculatePath();
         RetunToStart();
         StartCoroutine(FollowPath());
     }
 
-     void FindPath()
+     void RecalculatePath()
     {
         path.Clear();
         path = pathfinding.GetPath();
